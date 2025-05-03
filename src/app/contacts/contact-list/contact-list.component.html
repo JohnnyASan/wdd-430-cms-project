@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <strong>Contacts</strong
+    ><span
+      style="
+        right: inherit;
+        float: right;
+        position: absolute;
+        top: 5px;
+        right: 20px;
+      "
+      ><a href="#" role="button" class="btn btn-success">New Contact</a></span
+    >
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-10">
+        <ul class="list-group">
+          @for (contact of contacts; track $index) {
+          <a class="list-group-item" style="cursor: pointer">
+            {{ contact.name }} ({{ contact.phone }})
+          </a>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
