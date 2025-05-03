@@ -11,17 +11,17 @@ export class ContactListComponent {
   contacts: Contact[] = [
     new Contact(
       1,
-      'John Doe',
-      'email',
-      '1234567890',
-      'https://example.com/image.jpg'
+      'R. Kent Jackson',
+      'jacksonk@byui.edu',
+      '208-496-3771',
+      '../../../assets/images/jacksonk.jpg'
     ),
     new Contact(
       2,
-      'Jane Smith',
-      'email',
-      '0987654321',
-      'https://example.com/image.jpg'
+      'Rex Barzee',
+      'barzeer@byui.edu',
+      '208-496-3768',
+      '../../../assets/images/barzeer.jpg'
     ),
   ];
 }
