@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title: string = 'cms';
-  loadedFeature: string = '';
+  loadedFeature: string = 'messages';
 }
