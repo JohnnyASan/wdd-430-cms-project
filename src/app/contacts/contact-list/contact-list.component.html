@@ -16,20 +16,11 @@
     <div class="row">
       <div class="col-xs-12">
         <ul class="list-group">
-          @for (contact of contacts; track $index) {
-          <a href="#" class="list-group-item clearfix" style="cursor: pointer">
-            <div class="pull-left">
-              <h4 class="list-group-item-heading">{{ contact.name }}</h4>
-              <p class="list-group-item-text">{{ contact.email }}</p>
-            </div>
-            <span class="badge pull-right"
-              ><img
-                [src]="contact.imageUrl"
-                alt="contact photo of {{ contact.name }}"
-                class="img-responsive"
-                style="max-height: 50px"
-            /></span>
-          </a>
+          @for (contactEl of contacts; track $index) {
+          <cms-contact-item
+            [contact]="contactEl"
+            (click)="onContactClicked(contactEl)"
+          ></cms-contact-item>
           }
         </ul>
       </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Contact } from '../../shared/contact.model';
 
 @Component({
@@ -8,6 +8,7 @@ import { Contact } from '../../shared/contact.model';
   styleUrl: './contact-list.component.css',
 })
 export class ContactListComponent {
+  @Output() contactSelected = new EventEmitter<Contact>();
   contacts: Contact[] = [
     new Contact(
       1,
@@ -24,4 +25,8 @@ export class ContactListComponent {
       '../../../assets/images/barzeer.jpg'
     ),
   ];
+
+  onContactClicked(contact: Contact) {
+    this.contactSelected.emit(contact);
+  }
 }
