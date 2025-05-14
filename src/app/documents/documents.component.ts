@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'cms-documents',
   standalone: false,
   templateUrl: './documents.component.html',
-  styleUrl: './documents.component.css'
+  styleUrl: './documents.component.css',
 })
 export class DocumentsComponent {
-
+  selectedDocument: Document | null = null;
 }
