@@ -14,9 +14,10 @@ export class ContactListComponent {
   constructor(private contactsService: ContactsService) {}
   ngOnInit() {
     this.contacts = this.contactsService.getContacts();
-  }
-
-  onContactClicked(contact: Contact) {
-    this.contactsService.contactSelectedEvent.emit(contact);
+    this.contactsService.contactsChangedEvent.subscribe(
+      (contacts: Contact[]) => {
+        this.contacts = contacts;
+      }
+    );
   }
 }

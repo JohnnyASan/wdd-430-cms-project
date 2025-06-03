@@ -9,19 +9,25 @@
         top: 5px;
         right: 20px;
       "
-      ><a href="#" role="button" class="btn btn-success">New Contact</a></span
+      ><a
+        routerLink="/contacts/new"
+        style="cursor: pointer"
+        role="button"
+        class="btn btn-success"
+        >New Contact</a
+      ></span
     >
   </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-12">
         <ul class="list-group">
-          @for (contactEl of contacts; track $index) {
           <cms-contact-item
+            *ngFor="let contactEl of contacts; let i = index"
+            routerLink="/contacts/{{ i }}"
             [contact]="contactEl"
-            (click)="onContactClicked(contactEl)"
+            [index]="i"
           ></cms-contact-item>
-          }
         </ul>
       </div>
     </div>

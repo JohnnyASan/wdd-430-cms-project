@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'cms-header',
@@ -6,9 +6,4 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
-export class HeaderComponent {
-  @Output() featureSelected = new EventEmitter<string>();
-  onNavSelect(feature: string) {
-    this.featureSelected.emit(feature);
-  }
-}
+export class HeaderComponent {}

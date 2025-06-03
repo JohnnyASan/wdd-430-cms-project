@@ -13,8 +13,10 @@ export class DocumentListComponent {
   constructor(private documentsService: DocumentsService) {}
   ngOnInit() {
     this.documents = this.documentsService.getDocuments();
-  }
-  onDocumentSelected(document: Document) {
-    this.documentsService.documentSelectedEvent.emit(document);
+    this.documentsService.documentChangedEvent.subscribe(
+      (documents: Document[]) => {
+        this.documents = documents;
+      }
+    );
   }
 }

@@ -1,14 +1,9 @@
 <div class="row">
   <div class="col-md-5">
-    <cms-document-list
-      
-    ></cms-document-list>
+    <cms-document-list></cms-document-list>
   </div>
 
   <div class="col-md-4">
-    @if (selectedDocument != null) {
-    <cms-document-detail [document]="selectedDocument"></cms-document-detail>
-
-    }
+    <router-outlet></router-outlet>
   </div>
 </div>

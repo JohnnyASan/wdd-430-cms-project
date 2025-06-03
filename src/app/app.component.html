@@ -1,14 +1,8 @@
-<cms-header (featureSelected)="loadedFeature = $event"></cms-header>
+<cms-header></cms-header>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      @if (loadedFeature === 'documents') {
-      <cms-documents></cms-documents>
-      } @else if (loadedFeature === 'messages') {
-      <cms-message-list></cms-message-list>
-      } @else {
-      <cms-contacts></cms-contacts>
-      }
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

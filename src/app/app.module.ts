@@ -15,6 +15,28 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
 import { MessageItemComponent } from './messages/message-list/message-item/message-item.component';
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { DropdownDirective } from './shared/dropdown.directive';
+import { RouterModule, Routes } from '@angular/router';
+import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
+import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+
+const appRoutes: Routes = [
+  { path: '', redirectTo: '/documents', pathMatch: 'full' },
+  { path: 'contacts', component: ContactsComponent, children: [
+    { path: 'new', component: ContactEditComponent },
+    { path: ':id', component: ContactDetailComponent },
+    { path: ':id/edit', component: ContactEditComponent },
+  ]},
+  {
+    path: 'documents',
+    component: DocumentsComponent,
+    children: [
+      { path: 'new', component: DocumentEditComponent },
+      { path: ':id', component: DocumentDetailComponent },
+      { path: ':id/edit', component: DocumentEditComponent },
+    ],
+  },
+  { path: 'messages', component: MessageListComponent },
+];
 
 @NgModule({
   declarations: [
@@ -32,8 +54,10 @@ import { DropdownDirective } from './shared/dropdown.directive';
     MessageItemComponent,
     MessageEditComponent,
     DropdownDirective,
+    DocumentEditComponent,
+    ContactEditComponent,
   ],
-  imports: [BrowserModule],
+  imports: [BrowserModule, RouterModule.forRoot(appRoutes)],
   providers: [],
   bootstrap: [AppComponent],
 })

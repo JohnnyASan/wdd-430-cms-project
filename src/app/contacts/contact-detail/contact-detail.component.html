@@ -19,8 +19,20 @@
             gap: 10px;
           "
         >
-          <a href="#" role="button" class="btn btn-primary">Edit</a>
-          <a href="#" role="button" class="btn btn-danger">Delete</a>
+          <a
+            routerLink="/contacts/{{ contact.id }}/edit"
+            style="cursor: pointer"
+            role="button"
+            class="btn btn-primary"
+            >Edit</a
+          >
+          <a
+            style="cursor: pointer"
+            role="button"
+            class="btn btn-danger"
+            (click)="onDelete()"
+            >Delete</a
+          >
         </div>
       </div>
     </div>

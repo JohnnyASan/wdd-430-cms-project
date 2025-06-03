@@ -9,4 +9,5 @@ import { Contact } from '../../../shared/contact.model';
 })
 export class ContactItemComponent {
   @Input() contact: Contact;
+  @Input() index: number;
 }
