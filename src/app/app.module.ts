@@ -18,14 +18,19 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { RouterModule, Routes } from '@angular/router';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import { FormsModule } from '@angular/forms';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/documents', pathMatch: 'full' },
-  { path: 'contacts', component: ContactsComponent, children: [
-    { path: 'new', component: ContactEditComponent },
-    { path: ':id', component: ContactDetailComponent },
-    { path: ':id/edit', component: ContactEditComponent },
-  ]},
+  {
+    path: 'contacts',
+    component: ContactsComponent,
+    children: [
+      { path: 'new', component: ContactEditComponent },
+      { path: ':id', component: ContactDetailComponent },
+      { path: ':id/edit', component: ContactEditComponent },
+    ],
+  },
   {
     path: 'documents',
     component: DocumentsComponent,
@@ -57,7 +62,7 @@ const appRoutes: Routes = [
     DocumentEditComponent,
     ContactEditComponent,
   ],
-  imports: [BrowserModule, RouterModule.forRoot(appRoutes)],
+  imports: [BrowserModule, RouterModule.forRoot(appRoutes), FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

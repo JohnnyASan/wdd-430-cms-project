@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './contact-edit.component.css'
 })
 export class ContactEditComponent {
-
+  
 }
