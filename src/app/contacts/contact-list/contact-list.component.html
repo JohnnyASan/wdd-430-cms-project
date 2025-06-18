@@ -24,9 +24,9 @@
         <ul class="list-group">
           <cms-contact-item
             *ngFor="let contactEl of contacts; let i = index"
-            routerLink="/contacts/{{ i }}"
+            routerLink="/contacts/{{ contactEl.id }}"
             [contact]="contactEl"
-            [index]="i"
+            [index]="contactEl.id"
           ></cms-contact-item>
         </ul>
       </div>

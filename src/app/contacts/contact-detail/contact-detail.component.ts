@@ -20,7 +20,7 @@ export class ContactDetailComponent {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.index = params['id'];
-      this.contact = this.contactService.getContact(this.index);
+      this.contact = this.contactService.getContactById(this.index.toString());
     });
   }
 

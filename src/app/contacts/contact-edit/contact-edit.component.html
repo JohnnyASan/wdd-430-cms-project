@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-body">
-    <form id="contact-edit">
+    <form id="contact-edit" (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="row">
         <div class="col-sm-12 form-group">
           <label for="name">Name:</label>
@@ -10,6 +10,10 @@
             class="form-control required"
             size="120"
             max="120"
+            required
+            [ngModel]="contact?.name"
+            #name="ngModel"
+            name="name"
           />
         </div>
       </div>
@@ -23,7 +27,18 @@
             class="form-control required"
             size="120"
             max="255"
+            [ngModel]="contact?.email"
+            #email="ngModel"
+            name="email"
+            required
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
           />
+          <div
+            *ngIf="email.invalid && email.touched"
+            class="alert alert-danger"
+          >
+            Please enter a valid email address.
+          </div>
         </div>
       </div>
 
@@ -36,7 +51,17 @@
             class="form-control invalid"
             size="150"
             max="255"
+            name="phone"
+            [ngModel]="contact?.phone"
+            #phone="ngModel"
+            pattern="\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*"
           />
+          <div
+            *ngIf="phone.invalid && phone.touched"
+            class="alert alert-danger"
+          >
+            Please enter a valid phone number.
+          </div>
         </div>
       </div>
 
@@ -49,6 +74,9 @@
             class="form-control"
             size="150"
             max="255"
+            [ngModel]="contact?.imageUrl"
+            #imageUrl="ngModel"
+            name="imageUrl"
           />
         </div>
       </div>
@@ -65,8 +93,9 @@
                   [contact]="contact"
                 ></cms-contact-item>
                 <button
+                  type="button"
                   class="btn btn-danger col-sm-2 deleteButton"
-                  (click)="onRemoveItem(i)"
+                  (click)="onRemoveGroupContact(contact.id)"
                 >
                   X
                 </button>
@@ -78,10 +107,15 @@
           </div>
         </div>
       </div>
+      <div class="alert alert-danger" *ngIf="name.invalid || email.invalid">
+        The Name and Email fields are required.
+      </div>
 
       <div class="row">
         <div class="col-xs-12 btn-toolbar">
-          <button class="btn btn-success" type="submit">Save</button>
+          <button class="btn btn-success" type="submit" [disabled]="f.invalid" (click)="onSubmit(f)">
+            Save
+          </button>
           <button class="btn btn-primary" type="button" (click)="onCancel()">
             Cancel
           </button>
