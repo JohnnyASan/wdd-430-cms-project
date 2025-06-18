@@ -42,7 +42,8 @@ export class ContactsService {
     if (!contact) {
       return;
     }
-    contact.id = (this.maxContactId++).toString();
+    let maxId = this.getMaxId();
+    contact.id = (++maxId).toString();
     this.contacts.push(contact);
     this.contactsListChangedEvent.next(this.contacts.slice());
   }
@@ -60,11 +61,13 @@ export class ContactsService {
     this.contactsListChangedEvent.next(this.contacts.slice());
   }
 
-  deleteContact(index: number): void {
-    if (index < 0 || index >= this.contacts.length) {
+  deleteContact(id: number): void {
+    if (id < 0) {
       return;
     }
-    this.contacts.splice(index, 1);
+    this.contacts = this.contacts.filter(
+      (contact) => contact.id !== id.toString()
+    );
     this.contactsListChangedEvent.next(this.contacts.slice());
   }
 }

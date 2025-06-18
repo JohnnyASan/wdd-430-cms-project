@@ -38,7 +38,8 @@ export class DocumentsService {
     if (!document) {
       return;
     }
-    document.id = (this.maxDocumentId++).toString();
+    let maxId = this.getMaxId();
+    document.id = (++maxId).toString();
 
     this.documents.push(document);
     this.documentListChangedEvent.next(this.documents.slice());
