@@ -25,15 +25,15 @@ export class ContactEditComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       if (params['id']) {
-        this.originalContact = this.contactsService.getContactById(
-          params['id']
-        );
-        if (!this.originalContact) return;
-        this.editMode = true;
-        this.contact = Object.create(this.originalContact); // Create a copy of the original contact
-        if (this.contact.group) {
-          this.groupContacts = this.contact.group.slice();
-        }
+        this.contactsService.getContacts().subscribe((contacts) => {
+          this.originalContact = contacts.find((c) => c.id === params['id']);
+          if (!this.originalContact) return;
+          this.editMode = true;
+          this.contact = Object.create(this.originalContact); // Create a copy of the original contact
+          if (this.contact.group) {
+            this.groupContacts = this.contact.group.slice();
+          }
+        });
       } else this.editMode = false;
     });
   }

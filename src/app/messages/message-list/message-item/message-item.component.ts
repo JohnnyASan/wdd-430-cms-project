@@ -13,6 +13,12 @@ export class MessageItemComponent {
   @Input() message: Message;
   constructor(private contactsService: ContactsService) {}
   get sender(): Contact {
-    return this.contactsService.getContactById(this.message.sender);
+    let sender: Contact;
+    this.contactsService.getContacts().subscribe((contacts) => {
+      contacts = Object.values(contacts);
+      sender = contacts.find((c) => c.id === this.message.id);
+      return sender;
+    });
+    return sender;
   }
 }

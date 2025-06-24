@@ -39,7 +39,7 @@ export class DocumentsService {
     return this.http.get<Document[]>(`${this.baseUrl}/documents.json`);
   }
 
-  async addDocument(document: Document) {
+  addDocument(document: Document) {
     if (!document) {
       return;
     }

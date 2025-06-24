@@ -13,19 +13,21 @@ export class ContactDetailComponent {
   contact: Contact;
   index: number;
   constructor(
-    private contactService: ContactsService,
+    private contactsService: ContactsService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.index = params['id'];
-      this.contact = this.contactService.getContactById(this.index.toString());
+      this.contactsService.getContacts().subscribe((contacts) => {
+        this.contact = contacts.find((c) => c.id === params['id']);
+      });
     });
   }
 
   onDelete() {
-    this.contactService.deleteContact(this.index);
+    this.contactsService.deleteContact(this.index);
     this.router.navigate(['/contacts']);
   }
 }

@@ -1,73 +1,90 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Contact } from '../shared/contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactsService {
-  private contacts: Contact[] = [];
-  private maxContactId: number;
+  private baseUrl: string =
+    'https://ng-complete-guide-d6788-default-rtdb.europe-west1.firebasedatabase.app';
+  public nextId: string;
   contactsListChangedEvent = new Subject<Contact[]>();
 
-  constructor() {
-    this.contacts = MOCKCONTACTS;
-    this.maxContactId = this.getMaxId();
+  constructor(private http: HttpClient) {
+    this.getNextId();
+    this.contactsListChangedEvent.subscribe(() => this.getNextId());
   }
 
-  getMaxId(): number {
+  private getNextId() {
     let maxId = 0;
-    this.contacts.forEach((contact) => {
-      const currId = +contact.id;
-      if (currId > maxId) {
-        maxId = currId;
-      }
+    this.getContacts().subscribe((res) => {
+      let contacts = Object.values(res);
+
+      contacts.forEach((con) => {
+        if (con.id) {
+          if (+con.id > maxId) {
+            maxId = +con.id;
+          }
+        }
+      });
+      this.nextId = (++maxId).toString();
     });
-    return maxId;
+    return (++maxId).toString();
   }
 
-  getContacts(): Contact[] {
-    return this.contacts.slice();
-  }
-  getContact(index: number): Contact | undefined {
-    return this.getContacts()[index];
-  }
-
-  getContactById(id: string): Contact | undefined {
-    return this.getContacts().find((contact) => contact.id === id);
+  getContacts(): Observable<Contact[]> {
+    return this.http.get<Contact[]>(`${this.baseUrl}/contacts.json`);
   }
 
   addContact(contact: Contact): void {
     if (!contact) {
       return;
     }
-    let maxId = this.getMaxId();
-    contact.id = (++maxId).toString();
-    this.contacts.push(contact);
-    this.contactsListChangedEvent.next(this.contacts.slice());
+    contact.id = this.nextId;
+    this.http
+      .post<Contact>(`${this.baseUrl}/contacts.json`, contact)
+      .subscribe(() => {
+        this.getContacts().subscribe((contacts) => {
+          this.contactsListChangedEvent.next(Object.values(contacts));
+        });
+      });
   }
 
   updateContact(originalContact: Contact, newContact: Contact): void {
     if (!originalContact || !newContact) {
       return;
     }
-    const pos = this.contacts.indexOf(originalContact);
-    if (pos < 0) {
-      return;
-    }
-    newContact.id = originalContact.id; // Ensure the ID remains the same
-    this.contacts[pos] = newContact;
-    this.contactsListChangedEvent.next(this.contacts.slice());
+    this.http
+      .put<Contact>(
+        `${this.baseUrl}/contacts/${originalContact.id}.json`,
+        newContact
+      )
+      .subscribe((responseData) => {
+        console.log(responseData);
+        let docs = [];
+        this.getContacts().subscribe(
+          (contacts) => (docs = Object.values(contacts))
+        );
+        this.contactsListChangedEvent.next(docs);
+      });
   }
 
   deleteContact(id: number): void {
     if (id < 0) {
       return;
     }
-    this.contacts = this.contacts.filter(
-      (contact) => contact.id !== id.toString()
-    );
-    this.contactsListChangedEvent.next(this.contacts.slice());
+    this.http
+      .delete(`${this.baseUrl}/contacts/${id}.json`)
+      .subscribe((responseData) => {
+        console.log(responseData);
+        let docs = [];
+        this.getContacts().subscribe(
+          (contacts) => (docs = Object.values(contacts))
+        );
+        this.contactsListChangedEvent.next(docs);
+      });
   }
 }
