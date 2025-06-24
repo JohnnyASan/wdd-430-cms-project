@@ -12,9 +12,9 @@
   </div>
   <div class="panel-body">
     <div class="center-panel">
-      @for (doc of documents; track $index){
+      @if (documents.length > 0) { @for (doc of documents; track $index){
       <cms-document-item [item]="doc"></cms-document-item>
-      }
+      } }
     </div>
   </div>
 </div>

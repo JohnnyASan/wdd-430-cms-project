@@ -24,10 +24,15 @@ export class DocumentDetailComponent {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
-      this.document = this.documentsService.getDocument(this.id);
+      this.documentsService.getDocuments().subscribe((documents) => {
+        this.document = Object.values(documents).find(
+          (doc) => doc.id === this.id
+        );
+      });
     });
     this.nativeWindow = this.winRefService.getNativeWindow();
   }
+
   onView() {
     if (this.document) {
       this.nativeWindow.open(this.document.url);

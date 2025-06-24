@@ -26,10 +26,14 @@ export class DocumentEditComponent implements OnInit {
       if (params['id']) {
         let id = params['id'];
 
-        this.originalDocument = this.documentsService.getDocument(id);
-        if (!this.originalDocument) return;
-        this.editMode = true;
-        this.document = Object.create(this.originalDocument); // Create a copy of the original document
+        this.documentsService.getDocuments().subscribe((documents) => {
+          this.originalDocument = Object.values(documents).find(
+            (doc) => doc.id === id
+          );
+          if (!this.originalDocument) return;
+          this.editMode = true;
+          this.document = Object.create(this.originalDocument); // Create a copy of the original document
+        });
       } else {
         this.editMode = false;
       }

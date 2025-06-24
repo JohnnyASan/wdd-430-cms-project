@@ -11,12 +11,16 @@ import { Subscription } from 'rxjs';
 })
 export class DocumentListComponent {
   documents: Document[] = [];
+  private isFetching: boolean = false;
   private dlChanged: Subscription;
   constructor(private documentsService: DocumentsService) {}
   ngOnInit() {
-    this.documents = this.documentsService.getDocuments();
+    this.documentsService.getDocuments().subscribe((documents) => {
+      this.documents = Object.values(documents);
+    });
     this.dlChanged = this.documentsService.documentListChangedEvent.subscribe(
       (documents: Document[]) => {
+        console.log(documents);
         this.documents = documents;
       }
     );

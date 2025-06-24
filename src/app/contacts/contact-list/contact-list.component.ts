@@ -10,6 +10,7 @@ import { ContactsService } from '../contacts.service';
 })
 export class ContactListComponent {
   contacts: Contact[] = [];
+  term: string = '';
 
   constructor(private contactsService: ContactsService) {}
   ngOnInit() {
@@ -19,5 +20,9 @@ export class ContactListComponent {
         this.contacts = contacts;
       }
     );
+  }
+
+  search(value: string): void {
+    this.term = value;
   }
 }
