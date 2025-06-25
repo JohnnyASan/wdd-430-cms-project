@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ContactsService } from './contacts.service';
 
 @Component({
   selector: 'cms-contacts',
@@ -8,6 +7,6 @@ import { ContactsService } from './contacts.service';
   styleUrl: './contacts.component.css',
 })
 export class ContactsComponent {
-  constructor(private contactsService: ContactsService) {}
+  constructor() {}
   ngOnInit() {}
 }

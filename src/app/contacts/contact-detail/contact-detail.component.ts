@@ -22,6 +22,7 @@ export class ContactDetailComponent {
       this.index = params['id'];
       this.contactsService.getContacts().subscribe((contacts) => {
         this.contact = contacts.find((c) => c.id === params['id']);
+        if (!this.contact.email) this.contact.email = '';
       });
     });
   }

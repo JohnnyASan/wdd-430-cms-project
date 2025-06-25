@@ -6,7 +6,9 @@
 >
   <div class="pull-left">
     <h4 class="list-group-item-heading">{{ contact.name }}</h4>
-    <p class="list-group-item-text">{{ contact.email }}</p>
+    <p *ngIf="contact.email" class="list-group-item-text">
+      {{ contact.email }}
+    </p>
   </div>
   <span class="badge pull-right"
     ><img

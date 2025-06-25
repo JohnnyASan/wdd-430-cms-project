@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Document } from './document.model';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
-import { Observable, Subject } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -36,7 +36,17 @@ export class DocumentsService {
   }
 
   getDocuments(): Observable<Document[]> {
-    return this.http.get<Document[]>(`${this.baseUrl}/documents.json`);
+    return this.http.get<Document[]>(`${this.baseUrl}/documents.json`).pipe(
+      map((responseData) => {
+        console.log(responseData);
+        const arr: Document[] = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key))
+            arr.push({ ...responseData[key], firebaseId: key });
+        }
+        return arr;
+      })
+    );
   }
 
   addDocument(document: Document) {
@@ -60,7 +70,7 @@ export class DocumentsService {
 
     this.http
       .put<Document>(
-        `${this.baseUrl}/documents/${originalDocument.id}.json`,
+        `${this.baseUrl}/documents/${originalDocument.firebaseId}.json`,
         newDocument
       )
       .subscribe((responseData) => {
@@ -78,7 +88,7 @@ export class DocumentsService {
       return;
     }
     this.http
-      .delete(`${this.baseUrl}/documents/${document.id}.json`)
+      .delete(`${this.baseUrl}/documents/${document.firebaseId}.json`)
       .subscribe((responseData) => {
         console.log(responseData);
         let docs = [];

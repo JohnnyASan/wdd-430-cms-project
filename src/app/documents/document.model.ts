@@ -5,18 +5,21 @@ export class Document {
 
   public url?: string;
   public children?: Document[];
+  public firebaseId?: string;
 
   constructor(
     id: string,
     name: string,
     description: string = '',
     url: string,
-    children: Document[] = []
+    children: Document[] = [],
+    firebaseId: string = ''
   ) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.url = url;
     this.children = children;
+    this.firebaseId = firebaseId;
   }
 }

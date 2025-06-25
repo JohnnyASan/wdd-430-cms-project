@@ -17,10 +17,10 @@ export class DocumentListComponent {
   ngOnInit() {
     this.documentsService.getDocuments().subscribe((documents) => {
       this.documents = Object.values(documents);
+      console.log(documents);
     });
     this.dlChanged = this.documentsService.documentListChangedEvent.subscribe(
       (documents: Document[]) => {
-        console.log(documents);
         this.documents = documents;
       }
     );
