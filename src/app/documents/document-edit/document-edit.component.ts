@@ -41,6 +41,8 @@ export class DocumentEditComponent implements OnInit {
   onSubmit(form: NgForm) {
     if (this.editMode) {
       this.document = form.value;
+      this.document.id = this.originalDocument.id; // Ensure the ID remains the same
+      this.document.firebaseId = this.originalDocument.firebaseId; // Keep the firebaseId if it exists
       this.documentsService.updateDocument(
         this.originalDocument,
         this.document
@@ -51,7 +53,8 @@ export class DocumentEditComponent implements OnInit {
         form.value.name,
         form.value.description,
         form.value.url,
-        form.value.children
+        form.value.children,
+        ''
       );
       this.documentsService.addDocument(this.document);
     }
