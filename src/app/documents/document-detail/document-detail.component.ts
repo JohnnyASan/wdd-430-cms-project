@@ -25,9 +25,7 @@ export class DocumentDetailComponent {
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.documentsService.getDocuments().subscribe((documents) => {
-        this.document = Object.values(documents).find(
-          (doc) => doc.id === this.id
-        );
+        this.document = documents.find((doc) => doc.id === this.id);
       });
     });
     this.nativeWindow = this.winRefService.getNativeWindow();

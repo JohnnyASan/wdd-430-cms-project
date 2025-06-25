@@ -21,9 +21,7 @@ export class DocumentsService {
   private getNextId() {
     let maxId = 0;
     this.getDocuments().subscribe((res) => {
-      let docs = Object.values(res);
-
-      docs.forEach((doc) => {
+      res.forEach((doc) => {
         if (doc.id) {
           if (+doc.id > maxId) {
             maxId = +doc.id;
@@ -58,7 +56,7 @@ export class DocumentsService {
       .post<Document>(`${this.baseUrl}/documents.json`, document)
       .subscribe(() => {
         this.getDocuments().subscribe((documents) => {
-          this.documentListChangedEvent.next(Object.values(documents));
+          this.documentListChangedEvent.next(documents);
         });
       });
   }
@@ -76,9 +74,7 @@ export class DocumentsService {
       .subscribe((responseData) => {
         console.log(responseData);
         let docs = [];
-        this.getDocuments().subscribe(
-          (documents) => (docs = Object.values(documents))
-        );
+        this.getDocuments().subscribe((documents) => (docs = documents));
         this.documentListChangedEvent.next(docs);
       });
   }
@@ -92,9 +88,7 @@ export class DocumentsService {
       .subscribe((responseData) => {
         console.log(responseData);
         let docs = [];
-        this.getDocuments().subscribe(
-          (documents) => (docs = Object.values(documents))
-        );
+        this.getDocuments().subscribe((documents) => (docs = documents));
         this.documentListChangedEvent.next(docs);
       });
   }

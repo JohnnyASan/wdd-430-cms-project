@@ -19,7 +19,7 @@ export class ContactListComponent {
   ngOnInit() {
     this.contactsService
       .getContacts()
-      .subscribe((contacts) => (this.contacts = Object.values(contacts)));
+      .subscribe((contacts) => (this.contacts = contacts));
     this.clChanged = this.contactsService.contactsListChangedEvent.subscribe(
       (contacts: Contact[]) => {
         this.contacts = contacts;

@@ -15,7 +15,7 @@ export class MessageItemComponent {
   get sender(): Contact {
     let sender: Contact;
     this.contactsService.getContacts().subscribe((contacts) => {
-      contacts = Object.values(contacts);
+      contacts = contacts;
       sender = contacts.find((c) => c.id === this.message.id);
       return sender;
     });

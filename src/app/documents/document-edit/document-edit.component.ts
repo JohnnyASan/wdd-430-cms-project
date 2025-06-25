@@ -27,9 +27,7 @@ export class DocumentEditComponent implements OnInit {
         let id = params['id'];
 
         this.documentsService.getDocuments().subscribe((documents) => {
-          this.originalDocument = Object.values(documents).find(
-            (doc) => doc.id === id
-          );
+          this.originalDocument = documents.find((doc) => doc.id === id);
           if (!this.originalDocument) return;
           this.editMode = true;
           this.document = Object.create(this.originalDocument); // Create a copy of the original document

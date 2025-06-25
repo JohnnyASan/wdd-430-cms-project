@@ -21,9 +21,7 @@ export class ContactsService {
   private getNextId() {
     let maxId = 0;
     this.getContacts().subscribe((res) => {
-      let contacts = Object.values(res);
-
-      contacts.forEach((con) => {
+      res.forEach((con) => {
         if (con.id) {
           if (+con.id > maxId) {
             maxId = +con.id;
@@ -48,7 +46,7 @@ export class ContactsService {
       .post<Contact>(`${this.baseUrl}/contacts.json`, contact)
       .subscribe(() => {
         this.getContacts().subscribe((contacts) => {
-          this.contactsListChangedEvent.next(Object.values(contacts));
+          this.contactsListChangedEvent.next(contacts);
         });
       });
   }
@@ -65,9 +63,7 @@ export class ContactsService {
       .subscribe((responseData) => {
         console.log(responseData);
         let docs = [];
-        this.getContacts().subscribe(
-          (contacts) => (docs = Object.values(contacts))
-        );
+        this.getContacts().subscribe((contacts) => (docs = contacts));
         this.contactsListChangedEvent.next(docs);
       });
   }
@@ -81,9 +77,7 @@ export class ContactsService {
       .subscribe((responseData) => {
         console.log(responseData);
         let docs = [];
-        this.getContacts().subscribe(
-          (contacts) => (docs = Object.values(contacts))
-        );
+        this.getContacts().subscribe((contacts) => (docs = contacts));
         this.contactsListChangedEvent.next(docs);
       });
   }

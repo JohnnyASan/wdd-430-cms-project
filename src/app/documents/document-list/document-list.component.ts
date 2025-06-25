@@ -16,7 +16,7 @@ export class DocumentListComponent {
   constructor(private documentsService: DocumentsService) {}
   ngOnInit() {
     this.documentsService.getDocuments().subscribe((documents) => {
-      this.documents = Object.values(documents);
+      this.documents = documents;
       console.log(documents);
     });
     this.dlChanged = this.documentsService.documentListChangedEvent.subscribe(
