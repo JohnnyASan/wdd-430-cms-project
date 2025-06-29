@@ -98,7 +98,7 @@ export class DocumentsService {
     if (!document) {
       return;
     }
-    const pos = this.documents.indexOf(document);
+    const pos = this.documents.findIndex((doc) => doc.id === document.id);
     if (pos < 0) {
       return;
     }

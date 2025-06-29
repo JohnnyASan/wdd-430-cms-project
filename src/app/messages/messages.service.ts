@@ -6,6 +6,8 @@ import { MOCKMESSAGES } from './MOCKMESSAGES';
   providedIn: 'root',
 })
 export class MessagesService {
+  private baseUrl: string =
+    'https://ng-complete-guide-d6788-default-rtdb.europe-west1.firebasedatabase.app';
   private messages: Message[];
   messagesChangedEvent = new EventEmitter<Message[]>();
   addMessage(message: Message): void {
