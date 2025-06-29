@@ -3,18 +3,20 @@ import { Document } from './document.model';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Subject } from 'rxjs';
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root',
 })
 export class DocumentsService {
   private baseUrl: string =
-    'https://ng-complete-guide-d6788-default-rtdb.europe-west1.firebasedatabase.app/documents.json';
+    'https://ng-complete-guide-d6788-default-rtdb.europe-west1.firebasedatabase.app';
   private documents: Document[] = [];
   private maxDocumentId: number;
 
   documentListChangedEvent = new Subject<Document[]>();
-  constructor() {
-    this.documents = MOCKDOCUMENTS;
+  constructor(private http: HttpClient) {
+    this.getDocuments(); // Fetch documents on service initialization
     this.maxDocumentId = this.getMaxId();
   }
 
@@ -30,10 +32,40 @@ export class DocumentsService {
   }
 
   getDocuments(): Document[] {
-    return this.documents.slice(); // Return a copy of the documents array
+    this.http.get<Document[]>(this.baseUrl + '/documents.json').subscribe(
+      (documents) => {
+        this.documents = documents;
+        this.maxDocumentId = this.getMaxId();
+        this.documents.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
+        this.documentListChangedEvent.next(this.documents.slice());
+      },
+      (error: any) => {
+        console.error('Error fetching documents:', error);
+      }
+    );
+
+    return this.documents.slice();
   }
   getDocument(id: string): Document | undefined {
     return this.getDocuments().find((document) => document.id === id);
+  }
+
+  storeDocuments() {
+    let documents = JSON.stringify(this.documents);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    this.http
+      .put(this.baseUrl + '/documents.json', documents, { headers: headers })
+      .subscribe({
+        next: (response) => {
+          console.log('Documents stored successfully:', response);
+          this.documentListChangedEvent.next(this.documents.slice());
+        },
+        error: (error) => {
+          console.error('Error storing documents:', error);
+        },
+      });
   }
 
   addDocument(document: Document) {
@@ -44,20 +76,22 @@ export class DocumentsService {
     document.id = (++maxId).toString();
 
     this.documents.push(document);
-    this.documentListChangedEvent.next(this.documents.slice());
+    this.storeDocuments();
   }
 
   updateDocument(originalDocument: Document, newDocument: Document) {
     if (!originalDocument || !newDocument) {
       return;
     }
-    const pos = this.documents.indexOf(originalDocument);
+    const pos = this.documents.findIndex(
+      (doc) => doc.id === originalDocument.id
+    );
     if (pos < 0) {
       return;
     }
     newDocument.id = originalDocument.id; // Ensure the ID remains the same
     this.documents[pos] = newDocument;
-    this.documentListChangedEvent.next(this.documents.slice());
+    this.storeDocuments();
   }
 
   deleteDocument(document: Document) {
@@ -69,6 +103,6 @@ export class DocumentsService {
       return;
     }
     this.documents.splice(pos, 1);
-    this.documentListChangedEvent.next(this.documents.slice());
+    this.storeDocuments();
   }
 }
