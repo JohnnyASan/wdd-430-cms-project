@@ -15,10 +15,12 @@ export class DocumentListComponent {
   private dlChanged: Subscription;
   constructor(private documentsService: DocumentsService) {}
   ngOnInit() {
-    this.documentsService.getDocuments().subscribe((documents) => {
-      this.documents = documents;
-      console.log(documents);
-    });
+    this.documentsService
+      .getDocumentsFromDatabase()
+      .subscribe((documents: Document[]) => {
+        this.documents = documents;
+        this.isFetching = false;
+      });
     this.dlChanged = this.documentsService.documentListChangedEvent.subscribe(
       (documents: Document[]) => {
         this.documents = documents;

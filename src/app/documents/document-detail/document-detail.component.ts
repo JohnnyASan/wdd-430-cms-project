@@ -24,9 +24,9 @@ export class DocumentDetailComponent {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
-      this.documentsService.getDocuments().subscribe((documents) => {
-        this.document = documents.find((doc) => doc.id === this.id);
-      });
+      this.document = this.documentsService
+        .getDocuments()
+        .find((doc) => doc.id === this.id);
     });
     this.nativeWindow = this.winRefService.getNativeWindow();
   }
