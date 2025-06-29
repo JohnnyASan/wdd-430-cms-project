@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class DocumentsService {
+  private baseUrl: string =
+    'https://ng-complete-guide-d6788-default-rtdb.europe-west1.firebasedatabase.app/documents.json';
   private documents: Document[] = [];
   private maxDocumentId: number;
 

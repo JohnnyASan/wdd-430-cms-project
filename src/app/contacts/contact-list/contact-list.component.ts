@@ -9,6 +9,7 @@ import { ContactsService } from '../contacts.service';
   styleUrl: './contact-list.component.css',
 })
 export class ContactListComponent {
+  term: string = '';
   contacts: Contact[] = [];
 
   constructor(private contactsService: ContactsService) {}
@@ -19,5 +20,9 @@ export class ContactListComponent {
         this.contacts = contacts;
       }
     );
+  }
+
+  search(value: string): void {
+    this.term = value;
   }
 }
