@@ -1,4 +1,5 @@
 export class Contact {
+  public _id?: string; // MongoDB ID
   constructor(
     public id: string,
     public name: string,

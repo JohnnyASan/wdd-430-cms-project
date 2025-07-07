@@ -1,4 +1,5 @@
 export class Document {
+  public _id?: string; // MongoDB ID
   public id: string;
   public name: string;
   public description?: string;

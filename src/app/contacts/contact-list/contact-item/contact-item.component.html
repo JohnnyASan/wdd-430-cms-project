@@ -10,7 +10,9 @@
   </div>
   <span class="badge pull-right"
     ><img
-      [src]="contact.imageUrl"
+      src="{{
+        contact.imageUrl ? contact.imageUrl : '../assets/images/placeholder.jpg'
+      }}"
       alt="contact photo of {{ contact.name }}"
       class="img-responsive"
       style="max-height: 50px"

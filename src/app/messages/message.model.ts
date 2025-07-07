@@ -1,4 +1,5 @@
 export class Message {
+  public _id?: string; // MongoDB ID
   public id: string;
   public subject: string;
   public msgText: string;

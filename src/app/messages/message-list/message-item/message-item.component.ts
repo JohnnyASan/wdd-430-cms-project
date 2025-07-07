@@ -11,8 +11,16 @@ import { ContactsService } from '../../../contacts/contacts.service';
 })
 export class MessageItemComponent {
   @Input() message: Message;
+  sender: Contact;
   constructor(private contactsService: ContactsService) {}
-  get sender(): Contact {
-    return this.contactsService.getContactById(this.message.sender);
+  ngOnInit() {
+    this.sender = this.contactsService.getContactById(this.message.sender);
+    this.contactsService.contactsListChangedEvent.subscribe(
+      (contacts: Contact[]) => {
+        this.sender = contacts.find(
+          (contact) => contact.id === this.message.sender
+        );
+      }
+    );
   }
 }

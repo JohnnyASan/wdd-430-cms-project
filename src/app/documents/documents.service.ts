@@ -3,47 +3,35 @@ import { Document } from './document.model';
 import { Subject } from 'rxjs';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { response } from 'express';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DocumentsService {
-  private baseUrl: string =
-    'https://ng-complete-guide-d6788-default-rtdb.europe-west1.firebasedatabase.app';
+  private baseUrl: string = 'http://localhost:3000/documents';
   private documents: Document[] = [];
-  private maxDocumentId: number;
 
   documentListChangedEvent = new Subject<Document[]>();
   constructor(private http: HttpClient) {
     this.getDocuments(); // Fetch documents on service initialization
-    this.maxDocumentId = this.getMaxId();
-  }
-
-  getMaxId(): number {
-    let maxId = 0;
-    this.documents.forEach((document) => {
-      const currId = +document.id;
-      if (currId > maxId) {
-        maxId = currId;
-      }
-    });
-    return maxId;
   }
 
   getDocuments(): Document[] {
-    this.http.get<Document[]>(this.baseUrl + '/documents.json').subscribe(
-      (documents) => {
-        this.documents = documents;
-        this.maxDocumentId = this.getMaxId();
-        this.documents.sort((a, b) => {
-          return a.name.localeCompare(b.name);
-        });
-        this.documentListChangedEvent.next(this.documents.slice());
-      },
-      (error: any) => {
-        console.error('Error fetching documents:', error);
-      }
-    );
+    this.http
+      .get<{ message: String; documents: Document[] }>(this.baseUrl)
+      .subscribe(
+        ({ documents }) => {
+          this.documents = documents;
+          this.documents.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+          });
+          this.documentListChangedEvent.next(this.documents.slice());
+        },
+        (error: any) => {
+          console.error('Error fetching documents:', error);
+        }
+      );
 
     return this.documents.slice();
   }
@@ -54,43 +42,60 @@ export class DocumentsService {
   storeDocuments() {
     let documents = JSON.stringify(this.documents);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http
-      .put(this.baseUrl + '/documents.json', documents, { headers: headers })
-      .subscribe({
-        next: (response) => {
-          console.log('Documents stored successfully:', response);
-          this.documentListChangedEvent.next(this.documents.slice());
-        },
-        error: (error) => {
-          console.error('Error storing documents:', error);
-        },
-      });
+    this.http.put(this.baseUrl, documents, { headers: headers }).subscribe({
+      next: (response) => {
+        console.log('Documents stored successfully:', response);
+        this.documentListChangedEvent.next(this.documents.slice());
+      },
+      error: (error) => {
+        console.error('Error storing documents:', error);
+      },
+    });
   }
 
   addDocument(document: Document) {
     if (!document) {
       return;
     }
-    let maxId = this.getMaxId();
-    document.id = (++maxId).toString();
 
-    this.documents.push(document);
-    this.storeDocuments();
+    document.id = '';
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .post<{ message: String; document: Document }>(this.baseUrl, document, {
+        headers: headers,
+      })
+      .subscribe((response) => {
+        this.documents.push(response.document);
+        this.storeDocuments();
+      });
   }
 
   updateDocument(originalDocument: Document, newDocument: Document) {
     if (!originalDocument || !newDocument) {
       return;
     }
+
     const pos = this.documents.findIndex(
       (doc) => doc.id === originalDocument.id
     );
     if (pos < 0) {
       return;
     }
+
     newDocument.id = originalDocument.id; // Ensure the ID remains the same
-    this.documents[pos] = newDocument;
-    this.storeDocuments();
+    newDocument._id = originalDocument._id; // Ensure the MongoDB ID remains the same
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .put(this.baseUrl + '/' + originalDocument.id, newDocument, {
+        headers: headers,
+      })
+      .subscribe((response: Response) => {
+        this.documents[pos] = newDocument; // Update the document in the array
+        this.storeDocuments(); // Store the updated documents
+      });
   }
 
   deleteDocument(document: Document) {
@@ -101,7 +106,11 @@ export class DocumentsService {
     if (pos < 0) {
       return;
     }
-    this.documents.splice(pos, 1);
-    this.storeDocuments();
+    this.http
+      .delete(this.baseUrl + '/' + document.id)
+      .subscribe((response: Response) => {
+        this.documents.splice(pos, 1);
+        this.storeDocuments();
+      });
   }
 }
