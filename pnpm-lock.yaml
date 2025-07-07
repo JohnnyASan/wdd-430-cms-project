@@ -44,6 +44,9 @@ importers:
       mongoose:
         specifier: 8.16.2
         version: 8.16.2(@aws-sdk/credential-providers@3.840.0)(socks@2.8.5)
+      mongoose-unique-validator:
+        specifier: ^4.0.1
+        version: 4.0.1(mongoose@8.16.2(@aws-sdk/credential-providers@3.840.0)(socks@2.8.5))
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -3245,6 +3248,16 @@ packages:
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
 
+  lodash.foreach@4.5.0:
+    resolution: {integrity: sha512-aEXTF4d+m05rVOAUG3z4vZZ4xVexLKZGF0lIxuHZ1Hplpk/3B6Z1+/ICICYRLm7c41Z2xiejbkCkJoTlypoXhQ==}
+
+  lodash.get@4.4.2:
+    resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
+
+  lodash.merge@4.6.2:
+    resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
@@ -3454,6 +3467,11 @@ packages:
         optional: true
       socks:
         optional: true
+
+  mongoose-unique-validator@4.0.1:
+    resolution: {integrity: sha512-kd080ytRa6SmTOJlQPlAnsJHz7eH/b27dMHsN3WO2PeJc1lkcZ+ns6dLvcsu7Kx/f4SQEXu9JfL8kFkr4aFqFQ==}
+    peerDependencies:
+      mongoose: ^7.0.0
 
   mongoose@8.16.2:
     resolution: {integrity: sha512-52T4XPhDgJL4cqooBsOORzYBH3ddMwABMEF/LV7TgvD2DEKZlnYTc2HF9ch1U2lcKjhE4pQ+WuInfLFJbguGcQ==}
@@ -8512,6 +8530,12 @@ snapshots:
 
   lodash.debounce@4.0.8: {}
 
+  lodash.foreach@4.5.0: {}
+
+  lodash.get@4.4.2: {}
+
+  lodash.merge@4.6.2: {}
+
   lodash@4.17.21: {}
 
   log-symbols@4.1.0:
@@ -8701,6 +8725,13 @@ snapshots:
     optionalDependencies:
       '@aws-sdk/credential-providers': 3.840.0
       socks: 2.8.5
+
+  mongoose-unique-validator@4.0.1(mongoose@8.16.2(@aws-sdk/credential-providers@3.840.0)(socks@2.8.5)):
+    dependencies:
+      lodash.foreach: 4.5.0
+      lodash.get: 4.4.2
+      lodash.merge: 4.6.2
+      mongoose: 8.16.2(@aws-sdk/credential-providers@3.840.0)(socks@2.8.5)
 
   mongoose@8.16.2(@aws-sdk/credential-providers@3.840.0)(socks@2.8.5):
     dependencies:
